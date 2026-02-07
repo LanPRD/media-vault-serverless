@@ -54,13 +54,13 @@ export class RequestUploadUrlUseCase {
         mediaId
       );
 
-      await this.mediaRepository.save(media);
-
       const uploadResult = await this.storageGateway.generateUploadUrl({
         key: s3Key,
         contentType,
-        expiresIn: 300
+        expiresIn: 300 // 300 seconds = 5 minutes (adjust as needed)
       });
+
+      await this.mediaRepository.save(media);
 
       return right({
         uploadUrl: uploadResult.url,
