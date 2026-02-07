@@ -1,5 +1,3 @@
-import { left, right, type Either } from "@/core/either";
-
 export class FileName {
   public readonly value: string;
 
@@ -7,19 +5,17 @@ export class FileName {
     this.value = value;
   }
 
-  static create(fileName: string): Either<Error, FileName> {
+  static create(fileName: string): FileName {
     if (!FileName.isValid(fileName)) {
-      return left(
-        new Error(
-          "Invalid file name, please use only alphanumeric characters, dots (.), underscores (_), and hyphens (-) in the file name."
-        )
+      throw new Error(
+        "Invalid file name. Please use only alphanumeric characters, dots (.), underscores (_), and hyphens (-)."
       );
     }
 
-    return right(new FileName(fileName));
+    return new FileName(fileName);
   }
 
-  static isValid(fileName: string): boolean {
+  private static isValid(fileName: string): boolean {
     const validChars = /^[a-zA-Z0-9._-]+$/;
     return validChars.test(fileName);
   }

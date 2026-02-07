@@ -1,14 +1,15 @@
-import { Entity, type UniqueEntityId } from "@/core/entities";
-import { ContentType, FileName, FileSize, MediaStatus } from "../value-objects";
+import { Entity, UniqueEntityId } from "@/core/entities";
 import type { Optional } from "@/core/types/optional";
 import { EnumMediaStatus } from "../enums";
+import { ContentType, FileName, FileSize, MediaStatus } from "../value-objects";
+import type { S3Key } from "../value-objects/s3-key";
 
 interface MediaProps {
   ownerId: UniqueEntityId;
   fileName: FileName;
   fileSize: FileSize;
   contentType: ContentType;
-  s3Key: string;
+  s3Key: S3Key;
   thumbnail?: string;
   status: MediaStatus;
   createdAt: Date;
@@ -32,7 +33,7 @@ export class Media extends Entity<MediaProps> {
     return this.props.contentType;
   }
 
-  get s3Key(): string {
+  get s3Key(): S3Key {
     return this.props.s3Key;
   }
 
@@ -53,16 +54,17 @@ export class Media extends Entity<MediaProps> {
   }
 
   static create(
-    props: Optional<MediaProps, "createdAt" | "updatedAt">,
+    props: Optional<MediaProps, "createdAt" | "updatedAt" | "status">,
     id?: UniqueEntityId
   ): Media {
     return new Media(
       {
         ...props,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        status: props.status ?? MediaStatus.create(),
+        createdAt: props.createdAt ?? new Date(),
+        updatedAt: props.updatedAt ?? new Date()
       },
-      id
+      id ?? new UniqueEntityId()
     );
   }
 
@@ -73,13 +75,7 @@ export class Media extends Entity<MediaProps> {
       );
     }
 
-    const statusResult = MediaStatus.create(EnumMediaStatus.PROCESSING);
-
-    if (statusResult.isLeft()) {
-      throw statusResult.value;
-    }
-
-    this.props.status = statusResult.value;
+    this.props.status = MediaStatus.create(EnumMediaStatus.PROCESSING);
     this.props.updatedAt = new Date();
   }
 
@@ -99,13 +95,7 @@ export class Media extends Entity<MediaProps> {
       );
     }
 
-    const statusResult = MediaStatus.create(EnumMediaStatus.READY);
-
-    if (statusResult.isLeft()) {
-      throw statusResult.value;
-    }
-
-    this.props.status = statusResult.value;
+    this.props.status = MediaStatus.create(EnumMediaStatus.READY);
     this.props.updatedAt = new Date();
   }
 
@@ -116,13 +106,7 @@ export class Media extends Entity<MediaProps> {
       );
     }
 
-    const statusResult = MediaStatus.create(EnumMediaStatus.FAILED);
-
-    if (statusResult.isLeft()) {
-      throw statusResult.value;
-    }
-
-    this.props.status = statusResult.value;
+    this.props.status = MediaStatus.create(EnumMediaStatus.FAILED);
     this.props.thumbnail = undefined;
     this.props.updatedAt = new Date();
   }

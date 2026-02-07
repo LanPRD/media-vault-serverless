@@ -1,36 +1,34 @@
-import { left, right, type Either } from "@/core/either";
-
 export class FileSize {
   public readonly value: number;
-  private static KB = 1024; // 1 KB = 1024 bytes
-  private static MAX_SIZE_MB = 10; // 10 MB = 10 * 1024 KB
+  private static readonly KB = 1024;
+  private static readonly MAX_SIZE_MB = 10;
 
   private constructor(value: number) {
     this.value = value;
   }
 
-  static create(bytes: number): Either<Error, FileSize> {
-    if (!this.isValid(bytes)) {
-      return left(
-        new Error(
-          "Invalid file size, please provide a number between 1 and 10 MB (inclusive)."
-        )
+  static create(bytes: number): FileSize {
+    if (!FileSize.isValid(bytes)) {
+      throw new Error(
+        "Invalid file size. Please provide a size between 1 byte and 10 MB."
       );
     }
 
-    return right(new FileSize(bytes));
+    return new FileSize(bytes);
   }
 
-  static isValid(bytes: number): boolean {
-    return bytes > 0 && bytes <= this.MAX_SIZE_MB * this.KB * this.KB;
+  private static isValid(bytes: number): boolean {
+    return (
+      bytes > 0 && bytes <= FileSize.MAX_SIZE_MB * FileSize.KB * FileSize.KB
+    );
   }
 
   toMB(): number {
-    const fileSizeInMB = this.value / (FileSize.KB * FileSize.KB);
-    return fileSizeInMB;
+    return this.value / (FileSize.KB * FileSize.KB);
   }
 
   toString(): string {
-    return `${this.toMB()} MB`;
+    const decimals = 2;
+    return `${this.toMB().toFixed(decimals)} MB`;
   }
 }
