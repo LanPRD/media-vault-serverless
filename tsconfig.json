@@ -30,7 +30,7 @@
       "@/application/*": ["./src/application/*"],
       "@/infra/*": ["./src/infra/*"]
     },
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "node"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "__tests__/**/*.ts"]
 }
