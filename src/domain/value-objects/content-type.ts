@@ -1,3 +1,4 @@
+import { DomainErrors } from "../errors";
 import { EnumContentType } from "../enums";
 
 export class ContentType {
@@ -17,8 +18,8 @@ export class ContentType {
     const mappedValue = ContentType.STRING_TO_ENUM[contentType];
 
     if (!mappedValue) {
-      throw new Error(
-        "Invalid content type. Only JPEG, PNG, and MP4 are allowed."
+      throw DomainErrors.INVALID_CONTENT_TYPE(
+        "Only JPEG, PNG, and MP4 are allowed."
       );
     }
 

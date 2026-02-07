@@ -1,3 +1,5 @@
+import { DomainErrors } from "../errors";
+
 export class FileName {
   public readonly value: string;
 
@@ -7,8 +9,8 @@ export class FileName {
 
   static create(fileName: string): FileName {
     if (!FileName.isValid(fileName)) {
-      throw new Error(
-        "Invalid file name. Please use only alphanumeric characters, dots (.), underscores (_), and hyphens (-)."
+      throw DomainErrors.INVALID_FILE_NAME(
+        "Please use only alphanumeric characters, dots (.), underscores (_), and hyphens (-)."
       );
     }
 

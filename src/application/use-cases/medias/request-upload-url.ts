@@ -1,9 +1,11 @@
 import { left, right, type Either } from "@/core/either";
 import { UniqueEntityId } from "@/core/entities";
+import { AppError } from "@/core/errors";
 import { Media } from "@/domain/entities";
 import type { StorageGateway } from "@/domain/gateways/storage-gateway";
 import type { MediaRepository } from "@/domain/repositories/media-repository";
 import { ContentType, FileName, FileSize, S3Key } from "@/domain/value-objects";
+import { ApplicationErrors } from "../../errors";
 
 interface RequestUploadUrlInput {
   ownerId: string;
@@ -18,13 +20,7 @@ interface RequestUploadUrlOutput {
   expiresIn: number;
 }
 
-export type RequestUploadUrlError =
-  | { type: "INVALID_FILE_NAME"; message: string }
-  | { type: "INVALID_FILE_SIZE"; message: string }
-  | { type: "INVALID_CONTENT_TYPE"; message: string }
-  | { type: "STORAGE_ERROR"; message: string };
-
-type UseCaseResult = Either<RequestUploadUrlError, RequestUploadUrlOutput>;
+type UseCaseResult = Either<AppError, RequestUploadUrlOutput>;
 
 export class RequestUploadUrlUseCase {
   constructor(
@@ -72,25 +68,12 @@ export class RequestUploadUrlUseCase {
         expiresIn: uploadResult.expiresIn
       });
     } catch (error) {
-      return left(this.mapError(error));
+      if (error instanceof AppError) {
+        return left(error);
+      }
+
+      const message = error instanceof Error ? error.message : "Unknown error";
+      return left(ApplicationErrors.INTERNAL_ERROR(message));
     }
-  }
-
-  private mapError(error: unknown): RequestUploadUrlError {
-    const message = error instanceof Error ? error.message : "Unknown error";
-
-    if (message.toLowerCase().includes("file name")) {
-      return { type: "INVALID_FILE_NAME", message };
-    }
-
-    if (message.toLowerCase().includes("file size")) {
-      return { type: "INVALID_FILE_SIZE", message };
-    }
-
-    if (message.toLowerCase().includes("content type")) {
-      return { type: "INVALID_CONTENT_TYPE", message };
-    }
-
-    return { type: "STORAGE_ERROR", message };
   }
 }

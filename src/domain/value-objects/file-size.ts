@@ -1,3 +1,5 @@
+import { DomainErrors } from "../errors";
+
 export class FileSize {
   public readonly value: number;
   private static readonly KB = 1024;
@@ -9,8 +11,8 @@ export class FileSize {
 
   static create(bytes: number): FileSize {
     if (!FileSize.isValid(bytes)) {
-      throw new Error(
-        "Invalid file size. Please provide a size between 1 byte and 10 MB."
+      throw DomainErrors.INVALID_FILE_SIZE(
+        "Please provide a size between 1 byte and 10 MB."
       );
     }
 
