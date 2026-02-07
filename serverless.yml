@@ -11,7 +11,7 @@ plugins:
 
 functions:
   hello:
-    handler: dist/src/main.hello
+    handler: dist/src/infra/http/hello-word.hello
     events:
       - httpApi:
           path: /

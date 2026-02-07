@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "swc src -d dist",
+    "build": "npm run clean && swc src -d dist",
+    "build:watch": "swc src -d dist --watch",
     "check:types": "tsc --noEmit",
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
     "deploy": "npm run build && serverless deploy",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "offline": "npm run build && serverless offline",

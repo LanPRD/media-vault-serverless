@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Serverless Offline (build + run)",
+      "type": "node",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--inspect=9229"],
+      "args": [
+        "${workspaceFolder}/node_modules/serverless/bin/serverless.js",
+        "offline"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "sourceMaps": true,
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}
