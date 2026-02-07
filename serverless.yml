@@ -1,0 +1,18 @@
+service: media-vault-serverless
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: sa-east-1
+
+plugins:
+  - serverless-offline
+
+functions:
+  hello:
+    handler: dist/src/main.hello
+    events:
+      - httpApi:
+          path: /
+          method: get

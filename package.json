@@ -1,0 +1,34 @@
+{
+  "name": "media-vault-serverless",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "swc src -d dist",
+    "check:types": "tsc --noEmit",
+    "deploy": "npm run build && serverless deploy",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+    "offline": "npm run build && serverless offline",
+    "prettier:check": "npx prettier --check .",
+    "prettier:fix": "npx prettier --write .",
+    "test": "vitest --config vitest.config.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@prdev-solutions/eslint-config": "^2.5.4",
+    "@swc/cli": "^0.8.0",
+    "@swc/core": "^1.15.11",
+    "@types/aws-lambda": "^8.10.160",
+    "eslint": "^9.39.2",
+    "prettier": "^3.8.1",
+    "serverless": "^3.40.0",
+    "serverless-offline": "^13.9.0",
+    "typescript": "^5.9.3",
+    "unplugin-swc": "^1.5.9",
+    "vite-tsconfig-paths": "^6.1.0",
+    "vitest": "^4.0.18"
+  }
+}
