@@ -9,7 +9,8 @@
     "deploy:prod": "serverless deploy --stage prod",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "offline": "serverless offline",
-    "package": "serverless package --stage dev",
+    "package:dev": "serverless package --stage dev",
+    "package:prod": "serverless package --stage prod",
     "prettier:check": "npx prettier --check .",
     "prettier:fix": "npx prettier --write .",
     "test": "vitest --config vitest.config.ts"
@@ -34,7 +35,9 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.985.0",
+    "@aws-sdk/client-s3": "^3.985.0",
     "@aws-sdk/lib-dynamodb": "^3.985.0",
+    "@aws-sdk/s3-request-presigner": "^3.985.0",
     "dotenv": "^17.2.4",
     "zod": "^4.3.6"
   }

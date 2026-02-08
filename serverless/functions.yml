@@ -1,7 +1,8 @@
 functions:
-  hello:
-    handler: src/infra/http/hello-word.hello
+  generateUploadUrl:
+    handler: src/infra/http/handlers/generate-upload-url.handler
+    timeout: 15
     events:
       - httpApi:
-          path: /
-          method: get
+          path: /uploads/presign
+          method: post

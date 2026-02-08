@@ -17,14 +17,20 @@ plugins:
 custom:
   esbuild:
     bundle: true
-    minify: true
-    sourcemap: false
+    minify: ${self:custom.minify.${sls:stage}, true}
+    sourcemap: ${self:custom.sourcemap.${sls:stage}, false}
     target: node20
     platform: node
     exclude:
       - "@aws-sdk/*"
     define:
       "require.resolve": undefined
+  sourcemap:
+    dev: true
+    prod: false
+  minify:
+    dev: false
+    prod: true
 
 functions: ${file(./serverless/functions.yml):functions}
 
