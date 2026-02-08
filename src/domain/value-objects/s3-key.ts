@@ -13,6 +13,10 @@ export class S3Key {
     return new S3Key(this.generateKey(ownerId, mediaId, fileExtension));
   }
 
+  static fromString(key: string): S3Key {
+    return new S3Key(key);
+  }
+
   private static generateKey(
     ownerId: string,
     mediaId: string,

@@ -1,0 +1,7 @@
+functions:
+  hello:
+    handler: dist/src/infra/http/helloWord.hello
+    events:
+      - httpApi:
+          path: /
+          method: get

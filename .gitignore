@@ -2,3 +2,6 @@ node_modules
 .serverless
 dist
 docs/
+.env
+.env.*
+!.env.example

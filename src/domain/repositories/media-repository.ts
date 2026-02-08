@@ -3,5 +3,10 @@ import type { Media } from "../entities";
 
 export interface MediaRepository {
   save(media: Media): Promise<void>;
-  findById(id: UniqueEntityId): Promise<Media | null>;
+  findByIdAndUserId(
+    id: UniqueEntityId,
+    userId: UniqueEntityId
+  ): Promise<Media | null>;
+  findByOwnerId(ownerId: UniqueEntityId): Promise<Media[]>;
+  findByS3Key(s3Key: string): Promise<Media | null>;
 }

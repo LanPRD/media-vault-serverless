@@ -3,16 +3,16 @@ frameworkVersion: "3"
 
 provider:
   name: aws
-  runtime: nodejs22.x
+  runtime: nodejs20.x
   region: sa-east-1
+  environment: ${file(./serverless/resources.yml):environment}
+  iamRoleStatements: ${file(./serverless/iam.yml):iamRoleStatements}
 
 plugins:
   - serverless-offline
 
-functions:
-  hello:
-    handler: dist/src/infra/http/hello-word.hello
-    events:
-      - httpApi:
-          path: /
-          method: get
+functions: ${file(./serverless/functions.yml):functions}
+
+resources:
+  Resources: ${file(./serverless/resources.yml):Resources}
+  Outputs: ${file(./serverless/outputs.yml):Outputs}
