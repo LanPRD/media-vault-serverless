@@ -1,0 +1,14 @@
+Outputs:
+  MediaTableName:
+    Description: Name of the Media DynamoDB table
+    Value:
+      Ref: MediaTable
+    Export:
+      Name: ${self:service}-${sls:stage}-MediaTableName
+
+  MediaBucketName:
+    Description: Name of the Media S3 bucket
+    Value:
+      Ref: MediaBucket
+    Export:
+      Name: ${self:service}-${sls:stage}-MediaBucketName

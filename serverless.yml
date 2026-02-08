@@ -6,10 +6,25 @@ provider:
   runtime: nodejs20.x
   region: sa-east-1
   environment: ${file(./serverless/resources.yml):environment}
-  iamRoleStatements: ${file(./serverless/iam.yml):iamRoleStatements}
+  iam:
+    role:
+      statements: ${file(./serverless/iam.yml):iamRoleStatements}
 
 plugins:
+  - serverless-esbuild
   - serverless-offline
+
+custom:
+  esbuild:
+    bundle: true
+    minify: true
+    sourcemap: false
+    target: node20
+    platform: node
+    exclude:
+      - "@aws-sdk/*"
+    define:
+      "require.resolve": undefined
 
 functions: ${file(./serverless/functions.yml):functions}
 

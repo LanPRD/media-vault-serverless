@@ -1,6 +1,6 @@
 functions:
   hello:
-    handler: dist/src/infra/http/helloWord.hello
+    handler: src/infra/http/hello-word.hello
     events:
       - httpApi:
           path: /
