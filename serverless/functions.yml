@@ -1,4 +1,7 @@
 functions:
+  authorizerFunc:
+    handler: src/infra/http/handlers/authorizer.handler
+
   generateUploadUrl:
     handler: src/infra/http/handlers/generate-upload-url.handler
     timeout: 15
@@ -6,3 +9,5 @@ functions:
       - httpApi:
           path: /uploads/presign
           method: post
+          authorizer:
+            name: tokenAuthorizer

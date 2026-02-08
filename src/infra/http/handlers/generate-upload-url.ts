@@ -1,16 +1,20 @@
 import { RequestUploadUrlUseCase } from "@/application/use-cases/medias/request-upload-url";
 import { DynamoDBMediaRepository } from "@/infra/database/repositories/dynamodb-media.repository";
 import { S3StorageGateway } from "@/infra/gateways/s3-storage.gateway";
-import type { APIGatewayProxyEvent, APIGatewayProxyResultV2 } from "aws-lambda";
+import type {
+  APIGatewayProxyEventV2WithLambdaAuthorizer,
+  APIGatewayProxyResultV2
+} from "aws-lambda";
 import { generateUploadUrlBodySchema } from "../dtos/generate-upload-url.dto";
 import { ErrorMap } from "../errors";
+import type { TokenPayload } from "./authorizer";
 
 const mediaRepository = new DynamoDBMediaRepository();
 const storageGateway = new S3StorageGateway();
 const useCase = new RequestUploadUrlUseCase(mediaRepository, storageGateway);
 
 export async function handler(
-  event: APIGatewayProxyEvent
+  event: APIGatewayProxyEventV2WithLambdaAuthorizer<TokenPayload>
 ): Promise<APIGatewayProxyResultV2> {
   try {
     const parsed = generateUploadUrlBodySchema.safeParse(
@@ -27,10 +31,11 @@ export async function handler(
       };
     }
 
-    // const userId = event.requestContext.authorizer?.userId;
+    const userId = event.requestContext.authorizer.lambda.sub;
+    console.log(`Requesting upload URL for user ${userId}`);
 
     const result = await useCase.execute({
-      ownerId: "userId",
+      ownerId: userId,
       ...parsed.data
     });
 

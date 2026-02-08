@@ -1,20 +1,32 @@
 service: media-vault-serverless
 frameworkVersion: "3"
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs20.x
   region: sa-east-1
   environment: ${file(./serverless/resources.yml):environment}
+  useDotenv: true
   iam:
     role:
       statements: ${file(./serverless/iam.yml):iamRoleStatements}
+  httpApi:
+    authorizers:
+      tokenAuthorizer:
+        type: request
+        functionName: authorizerFunc
+        enableSimpleResponses: true
+        identitySource: $request.header.Authorization
 
 plugins:
   - serverless-esbuild
   - serverless-offline
 
 custom:
+  dotenv:
+    path: .env
   esbuild:
     bundle: true
     minify: ${self:custom.minify.${sls:stage}, true}

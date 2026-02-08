@@ -10,6 +10,7 @@ const envSchema = z.object({
   AWS_REGION: z.string().default("sa-east-1"),
   MEDIA_TABLE_NAME: z.string(),
   MEDIA_BUCKET_NAME: z.string(),
+  JWT_SECRET: z.string(),
   NODE_ENV: z.enum(["development", "test", "production"]).default("development")
 });
 

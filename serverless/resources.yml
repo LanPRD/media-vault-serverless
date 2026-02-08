@@ -1,6 +1,7 @@
 environment:
   MEDIA_TABLE_NAME: ${self:service}-media-${sls:stage}
   MEDIA_BUCKET_NAME: ${self:service}-bucket-${sls:stage}
+  JWT_SECRET: ${env:JWT_SECRET}
 
 Resources:
   MediaTable:
