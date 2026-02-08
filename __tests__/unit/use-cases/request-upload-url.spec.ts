@@ -1,17 +1,17 @@
 import { RequestUploadUrlUseCase } from "@/application/use-cases/medias/request-upload-url";
 import { UniqueEntityId } from "@/core/entities";
 import { EnumMediaStatus } from "@/domain/enums";
-import { FakeStorageGateway } from "../../fakes/gateways/fake-storage-gateway";
+import { FakeStorageService } from "../../fakes/services/fake-storage-gateway";
 import { FakeMediaRepository } from "../../fakes/repositories/fake-media-repository";
 
 describe("RequestUploadUrlUseCase", () => {
   let sut: RequestUploadUrlUseCase;
   let mediaRepository: FakeMediaRepository;
-  let storageGateway: FakeStorageGateway;
+  let storageGateway: FakeStorageService;
 
   beforeEach(() => {
     mediaRepository = new FakeMediaRepository();
-    storageGateway = new FakeStorageGateway();
+    storageGateway = new FakeStorageService();
     sut = new RequestUploadUrlUseCase(mediaRepository, storageGateway);
   });
 

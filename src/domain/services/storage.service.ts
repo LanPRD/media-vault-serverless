@@ -5,7 +5,7 @@ export interface DefaultStorageOutput {
   expiresIn: number;
 }
 
-export interface StorageGateway {
+export interface StorageService {
   generateUploadUrl(params: {
     key: S3Key;
     contentType: ContentType;

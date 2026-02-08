@@ -1,7 +1,7 @@
 import type {
   DefaultStorageOutput,
-  StorageGateway
-} from "@/domain/gateways/storage-gateway";
+  StorageService
+} from "@/domain/services/storage.service";
 import type { ContentType, S3Key } from "@/domain/value-objects";
 import {
   GetObjectCommand,
@@ -11,8 +11,21 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { env } from "../env";
 
-export class S3StorageGateway implements StorageGateway {
-  private readonly s3 = new S3Client({});
+const isTest = env.NODE_ENV === "test";
+
+const s3Client = new S3Client(
+  isTest ?
+    {
+      endpoint: "http://localhost:4566",
+      region: "sa-east-1",
+      credentials: { accessKeyId: "test", secretAccessKey: "test" },
+      forcePathStyle: true
+    }
+  : {}
+);
+
+export class S3StorageService implements StorageService {
+  private readonly s3 = s3Client;
   private readonly bucketName = env.MEDIA_BUCKET_NAME;
   private readonly defaultExpiresInSeconds = 300;
 

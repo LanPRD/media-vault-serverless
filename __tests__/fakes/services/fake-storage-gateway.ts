@@ -1,10 +1,10 @@
 import type {
   DefaultStorageOutput,
-  StorageGateway
-} from "@/domain/gateways/storage-gateway";
+  StorageService
+} from "@/domain/services/storage.service";
 import type { ContentType, S3Key } from "@/domain/value-objects";
 
-export class FakeStorageGateway implements StorageGateway {
+export class FakeStorageService implements StorageService {
   public uploadUrls: Map<string, string> = new Map();
   public shouldFail = false;
 

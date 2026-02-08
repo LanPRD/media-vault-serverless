@@ -8,7 +8,6 @@ provider:
   runtime: nodejs20.x
   region: sa-east-1
   environment: ${file(./serverless/resources.yml):environment}
-  useDotenv: true
   iam:
     role:
       statements: ${file(./serverless/iam.yml):iamRoleStatements}
@@ -20,29 +19,14 @@ provider:
         enableSimpleResponses: true
         identitySource: $request.header.Authorization
 
-plugins:
-  - serverless-esbuild
-  - serverless-offline
+plugins: ${file(./serverless/plugins.yml):plugins}
 
 custom:
   dotenv:
     path: .env
-  esbuild:
-    bundle: true
-    minify: ${self:custom.minify.${sls:stage}, true}
-    sourcemap: ${self:custom.sourcemap.${sls:stage}, false}
-    target: node20
-    platform: node
-    exclude:
-      - "@aws-sdk/*"
-    define:
-      "require.resolve": undefined
-  sourcemap:
-    dev: true
-    prod: false
-  minify:
-    dev: false
-    prod: true
+  esbuild: ${file(./serverless/esbuild.yml):esbuild}
+  sourcemap: ${file(./serverless/esbuild.yml):sourcemap}
+  minify: ${file(./serverless/esbuild.yml):minify}
 
 functions: ${file(./serverless/functions.yml):functions}
 

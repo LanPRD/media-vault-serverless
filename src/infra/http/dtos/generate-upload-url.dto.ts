@@ -9,4 +9,8 @@ export const generateUploadUrlBodySchema = z.object({
   })
 });
 
-export type GenerateUploadUrlBody = z.infer<typeof generateUploadUrlBodySchema>;
+export interface GenerateUploadUrlResponseDto {
+  uploadUrl: string;
+  fileId: string;
+  expiresIn: number;
+}

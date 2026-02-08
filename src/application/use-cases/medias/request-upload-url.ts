@@ -2,7 +2,7 @@ import { left, right, type Either } from "@/core/either";
 import { UniqueEntityId } from "@/core/entities";
 import { AppError } from "@/core/errors";
 import { Media } from "@/domain/entities";
-import type { StorageGateway } from "@/domain/gateways/storage-gateway";
+import type { StorageService } from "@/domain/services/storage.service";
 import type { MediaRepository } from "@/domain/repositories/media-repository";
 import { ContentType, FileName, FileSize, S3Key } from "@/domain/value-objects";
 import { ApplicationErrors } from "../../errors";
@@ -25,7 +25,7 @@ type UseCaseResult = Either<AppError, RequestUploadUrlOutput>;
 export class RequestUploadUrlUseCase {
   constructor(
     private readonly mediaRepository: MediaRepository,
-    private readonly storageGateway: StorageGateway
+    private readonly storageGateway: StorageService
   ) {}
 
   async execute(input: RequestUploadUrlInput): Promise<UseCaseResult> {

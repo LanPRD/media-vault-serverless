@@ -8,12 +8,12 @@
     "deploy:dev": "serverless deploy --stage dev",
     "deploy:prod": "serverless deploy --stage prod",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
-    "offline": "serverless offline",
-    "package:dev": "serverless package --stage dev",
-    "package:prod": "serverless package --stage prod",
+    "offline": "serverless offline start",
     "prettier:check": "npx prettier --check .",
     "prettier:fix": "npx prettier --write .",
-    "test": "vitest --config vitest.config.ts"
+    "test": "vitest --config vitest.config.ts",
+    "localstack:up": "docker compose up -d",
+    "localstack:down": "docker compose down"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@prdev-solutions/eslint-config": "^2.5.4",
+    "@serverless/event-mocks": "^1.1.1",
     "@types/aws-lambda": "^8.10.160",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.2.1",
