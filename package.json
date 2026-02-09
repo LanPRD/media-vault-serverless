@@ -32,6 +32,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.3.0",
     "@prdev-solutions/eslint-config": "^2.5.4",
     "@serverless/event-mocks": "^1.1.1",
     "@types/aws-lambda": "^8.10.160",

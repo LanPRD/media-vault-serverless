@@ -11,3 +11,11 @@ functions:
           method: post
           authorizer:
             name: tokenAuthorizer
+
+  generateJWT:
+    handler: src/infra/http/handlers/generate-jwt.handler
+    timeout: 15
+    events:
+      - httpApi:
+          path: /auth
+          method: post
