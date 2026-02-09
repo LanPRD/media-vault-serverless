@@ -2,7 +2,7 @@ import { left, right, type Either } from "@/core/either";
 import { UniqueEntityId } from "@/core/entities";
 import { AppError, InternalError } from "@/core/errors";
 import { Media } from "@/domain/entities";
-import type { MediaRepository } from "@/domain/repositories/media-repository";
+import type { MediaRepository } from "@/domain/repositories/media.repository";
 import type { StorageService } from "@/domain/services/storage.service";
 import { ContentType, FileName, FileSize, S3Key } from "@/domain/value-objects";
 

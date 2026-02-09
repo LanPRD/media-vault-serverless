@@ -7,7 +7,7 @@ import {
   GenerateUploadUrlRequestSchema,
   type GenerateUploadUrlResponseDto
 } from "../dtos";
-import { created, error } from "../response";
+import { HandlerResponse } from "../response";
 import type { TokenPayload } from "./authorizer";
 
 const storageGateway = new S3StorageService();
@@ -26,7 +26,7 @@ export async function handler(
       .map(i => `${i.path.join(".")}: ${i.message}`)
       .join("; ");
 
-    return error(new ValidationError(issues));
+    return HandlerResponse.error(new ValidationError(issues));
   }
 
   const userId = event.requestContext.authorizer.lambda.sub;
@@ -37,8 +37,8 @@ export async function handler(
   });
 
   if (result.isLeft()) {
-    return error(result.value);
+    return HandlerResponse.error(result.value);
   }
 
-  return created<GenerateUploadUrlResponseDto>(result.value);
+  return HandlerResponse.created<GenerateUploadUrlResponseDto>(result.value);
 }

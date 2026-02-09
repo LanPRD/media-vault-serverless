@@ -1,17 +1,34 @@
-import type { APIGatewayProxyResultV2 } from "aws-lambda";
 import { AppError, HttpStatus } from "@/core/errors";
+import type { APIGatewayProxyResultV2 } from "aws-lambda";
 
-const json = (statusCode: number, body: unknown): APIGatewayProxyResultV2 => ({
-  statusCode,
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(body)
-});
+export class HandlerResponse {
+  static ok<T>(data: T) {
+    return HandlerResponse.json(HttpStatus.OK, data);
+  }
 
-// Success
-export const ok = <T>(data: T) => json(HttpStatus.OK, data);
-export const created = <T>(data: T) => json(HttpStatus.CREATED, data);
-export const noContent = () => json(HttpStatus.NO_CONTENT, null);
+  static created<T>(data: T) {
+    return HandlerResponse.json(HttpStatus.CREATED, data);
+  }
 
-// Error
-export const error = (err: AppError) =>
-  json(err.statusCode, { error: err.errorType, message: err.message });
+  static noContent() {
+    return HandlerResponse.json(HttpStatus.NO_CONTENT, null);
+  }
+
+  static error(err: AppError) {
+    return HandlerResponse.json(err.statusCode, {
+      error: err.errorType,
+      message: err.message
+    });
+  }
+
+  private static json(
+    statusCode: number,
+    body: unknown
+  ): APIGatewayProxyResultV2 {
+    return {
+      statusCode,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    };
+  }
+}

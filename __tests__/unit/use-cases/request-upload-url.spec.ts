@@ -142,7 +142,7 @@ describe("RequestUploadUrlUseCase", () => {
         expect(result.isLeft()).toBe(true);
 
         if (result.isLeft()) {
-          expect(result.value.code).toBe("INVALID_FILE_NAME");
+          expect(result.value.errorType).toBe("INVALID_FILE_NAME");
         }
 
         expect(mediaRepository.medias).toHaveLength(0);
@@ -165,7 +165,7 @@ describe("RequestUploadUrlUseCase", () => {
         expect(result.isLeft()).toBe(true);
 
         if (result.isLeft()) {
-          expect(result.value.code).toBe("INVALID_FILE_NAME");
+          expect(result.value.errorType).toBe("INVALID_FILE_NAME");
         }
 
         expect(mediaRepository.medias).toHaveLength(0);
@@ -191,7 +191,7 @@ describe("RequestUploadUrlUseCase", () => {
         expect(result.isLeft()).toBe(true);
 
         if (result.isLeft()) {
-          expect(result.value.code).toBe("INVALID_FILE_SIZE");
+          expect(result.value.errorType).toBe("INVALID_FILE_SIZE");
         }
 
         expect(mediaRepository.medias).toHaveLength(0);
@@ -215,7 +215,7 @@ describe("RequestUploadUrlUseCase", () => {
         expect(result.isLeft()).toBe(true);
 
         if (result.isLeft()) {
-          expect(result.value.code).toBe("INVALID_FILE_SIZE");
+          expect(result.value.errorType).toBe("INVALID_FILE_SIZE");
         }
 
         expect(mediaRepository.medias).toHaveLength(0);
@@ -239,7 +239,7 @@ describe("RequestUploadUrlUseCase", () => {
         expect(result.isLeft()).toBe(true);
 
         if (result.isLeft()) {
-          expect(result.value.code).toBe("INVALID_FILE_SIZE");
+          expect(result.value.errorType).toBe("INVALID_FILE_SIZE");
         }
 
         expect(mediaRepository.medias).toHaveLength(0);
@@ -266,7 +266,7 @@ describe("RequestUploadUrlUseCase", () => {
         expect(result.isLeft()).toBe(true);
 
         if (result.isLeft()) {
-          expect(result.value.code).toBe("INVALID_CONTENT_TYPE");
+          expect(result.value.errorType).toBe("INVALID_CONTENT_TYPE");
         }
 
         expect(mediaRepository.medias).toHaveLength(0);
@@ -291,7 +291,7 @@ describe("RequestUploadUrlUseCase", () => {
         expect(result.isLeft()).toBe(true);
 
         if (result.isLeft()) {
-          expect(result.value.code).toBe("INVALID_CONTENT_TYPE");
+          expect(result.value.errorType).toBe("INVALID_CONTENT_TYPE");
         }
 
         expect(mediaRepository.medias).toHaveLength(0);
@@ -320,7 +320,7 @@ describe("RequestUploadUrlUseCase", () => {
       expect(result.isLeft()).toBe(true);
 
       if (result.isLeft()) {
-        expect(result.value.code).toBe("INTERNAL_ERROR");
+        expect(result.value.errorType).toBe("INTERNAL_ERROR");
       }
 
       expect(mediaRepository.medias).toHaveLength(0);

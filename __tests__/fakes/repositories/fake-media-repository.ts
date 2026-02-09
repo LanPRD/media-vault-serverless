@@ -1,6 +1,6 @@
 import type { UniqueEntityId } from "@/core/entities";
 import type { Media } from "@/domain/entities";
-import type { MediaRepository } from "@/domain/repositories/media-repository";
+import type { MediaRepository } from "@/domain/repositories/media.repository";
 
 export class FakeMediaRepository implements MediaRepository {
   public medias: Media[] = [];
