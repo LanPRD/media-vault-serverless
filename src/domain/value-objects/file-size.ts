@@ -1,4 +1,4 @@
-import { DomainErrors } from "../errors";
+import { BadRequestError } from "@/core/errors";
 
 export class FileSize {
   public readonly value: number;
@@ -11,7 +11,7 @@ export class FileSize {
 
   static create(bytes: number): FileSize {
     if (!FileSize.isValid(bytes)) {
-      throw DomainErrors.INVALID_FILE_SIZE(
+      throw new BadRequestError(
         "Please provide a size between 1 byte and 10 MB."
       );
     }

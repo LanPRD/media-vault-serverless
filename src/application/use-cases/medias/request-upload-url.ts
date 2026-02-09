@@ -1,11 +1,10 @@
 import { left, right, type Either } from "@/core/either";
 import { UniqueEntityId } from "@/core/entities";
-import { AppError } from "@/core/errors";
+import { AppError, InternalError } from "@/core/errors";
 import { Media } from "@/domain/entities";
-import type { StorageService } from "@/domain/services/storage.service";
 import type { MediaRepository } from "@/domain/repositories/media-repository";
+import type { StorageService } from "@/domain/services/storage.service";
 import { ContentType, FileName, FileSize, S3Key } from "@/domain/value-objects";
-import { ApplicationErrors } from "../../errors";
 
 interface RequestUploadUrlInput {
   ownerId: string;
@@ -71,8 +70,9 @@ export class RequestUploadUrlUseCase {
         return left(error);
       }
 
-      const message = error instanceof Error ? error.message : "Unknown error";
-      return left(ApplicationErrors.INTERNAL_ERROR(message));
+      return left(
+        new InternalError(error instanceof Error ? error.message : undefined)
+      );
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Entity, UniqueEntityId } from "@/core/entities";
+import { AppError, BadRequestError, HttpStatus } from "@/core/errors";
 import type { Optional } from "@/core/types/optional";
 import { EnumMediaStatus } from "../enums";
-import { DomainErrors } from "../errors";
 import { ContentType, FileName, FileSize, MediaStatus } from "../value-objects";
 import type { S3Key } from "../value-objects/s3-key";
 
@@ -71,9 +71,10 @@ export class Media extends Entity<MediaProps> {
 
   startProcessing(): void {
     if (!this.props.status.canTransitionTo(EnumMediaStatus.PROCESSING)) {
-      throw DomainErrors.INVALID_STATUS_TRANSITION(
-        this.props.status.value,
-        EnumMediaStatus.PROCESSING
+      throw new AppError(
+        HttpStatus.BAD_REQUEST,
+        "INVALID_STATUS_TRANSITION",
+        `Cannot transition from ${this.props.status.value} to ${EnumMediaStatus.PROCESSING}`
       );
     }
 
@@ -83,7 +84,11 @@ export class Media extends Entity<MediaProps> {
 
   attachThumbnail(thumbnailKey: string): void {
     if (!this.props.contentType.isImage()) {
-      throw DomainErrors.THUMBNAIL_NOT_ALLOWED();
+      throw new AppError(
+        HttpStatus.BAD_REQUEST,
+        "THUMBNAIL_NOT_ALLOWED",
+        "Only images can have thumbnails"
+      );
     }
 
     this.props.thumbnail = thumbnailKey;
@@ -92,9 +97,8 @@ export class Media extends Entity<MediaProps> {
 
   markAsReady(): void {
     if (!this.props.status.canTransitionTo(EnumMediaStatus.READY)) {
-      throw DomainErrors.INVALID_STATUS_TRANSITION(
-        this.props.status.value,
-        EnumMediaStatus.READY
+      throw new BadRequestError(
+        `Cannot transition from ${this.props.status.value} to ${EnumMediaStatus.READY}`
       );
     }
 
@@ -104,9 +108,8 @@ export class Media extends Entity<MediaProps> {
 
   markAsFailed(): void {
     if (!this.props.status.canTransitionTo(EnumMediaStatus.FAILED)) {
-      throw DomainErrors.INVALID_STATUS_TRANSITION(
-        this.props.status.value,
-        EnumMediaStatus.FAILED
+      throw new BadRequestError(
+        `Cannot transition from ${this.props.status.value} to ${EnumMediaStatus.FAILED}`
       );
     }
 

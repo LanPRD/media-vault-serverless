@@ -1,4 +1,4 @@
-import { DomainErrors } from "../errors";
+import { BadRequestError } from "@/core/errors";
 
 export class FileName {
   public readonly value: string;
@@ -9,7 +9,7 @@ export class FileName {
 
   static create(fileName: string): FileName {
     if (!FileName.isValid(fileName)) {
-      throw DomainErrors.INVALID_FILE_NAME(
+      throw new BadRequestError(
         "Please use only alphanumeric characters, dots (.), underscores (_), and hyphens (-)."
       );
     }
