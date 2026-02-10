@@ -1,3 +1,7 @@
+import type {
+  RequestUploadUrlInput,
+  RequestUploadUrlOutput
+} from "@/application/dtos";
 import { left, right, type Either } from "@/core/either";
 import { UniqueEntityId } from "@/core/entities";
 import { AppError, InternalError } from "@/core/errors";
@@ -5,19 +9,6 @@ import { Media } from "@/domain/entities";
 import type { MediaRepository } from "@/domain/repositories/media.repository";
 import type { StorageService } from "@/domain/services/storage.service";
 import { ContentType, FileName, FileSize, S3Key } from "@/domain/value-objects";
-
-interface RequestUploadUrlInput {
-  ownerId: string;
-  fileName: string;
-  fileSize: number;
-  contentType: string;
-}
-
-interface RequestUploadUrlOutput {
-  uploadUrl: string;
-  fileId: string;
-  expiresIn: number;
-}
 
 type UseCaseResult = Either<AppError, RequestUploadUrlOutput>;
 
@@ -43,13 +34,7 @@ export class RequestUploadUrlUseCase {
       );
 
       const media = Media.create(
-        {
-          ownerId,
-          fileName,
-          fileSize,
-          contentType,
-          s3Key
-        },
+        { ownerId, fileName, fileSize, contentType, s3Key },
         mediaId
       );
 

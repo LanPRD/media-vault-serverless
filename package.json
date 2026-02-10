@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build:layer": "powershell -ExecutionPolicy Bypass -File scripts/build-sharp-layer.ps1",
     "check:types": "tsc --noEmit",
     "ci": "npm run prettier:check && npm run lint && npm run check:types && npm test -- --run",
-    "deploy:dev": "serverless deploy --stage dev",
-    "deploy:prod": "serverless deploy --stage prod",
+    "deploy:dev": "npm run build:layer && serverless deploy --stage dev",
+    "deploy:prod": "npm run build:layer && serverless deploy --stage prod",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "offline": "serverless offline start",
     "prettier:check": "npx prettier --check .",
@@ -32,6 +33,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.3.0",
     "@prdev-solutions/eslint-config": "^2.5.4",
     "@serverless/event-mocks": "^1.1.1",
     "@types/aws-lambda": "^8.10.160",
@@ -43,6 +45,7 @@
     "serverless": "^3.40.0",
     "serverless-esbuild": "^1.57.0",
     "serverless-offline": "^13.9.0",
+    "sharp": "^0.34.5",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^6.1.0",
