@@ -58,4 +58,35 @@ export class S3StorageService implements StorageService {
 
     return { url, expiresIn: this.defaultExpiresInSeconds };
   }
+
+  async getObject(key: string): Promise<Buffer> {
+    const command = new GetObjectCommand({
+      Bucket: this.bucketName,
+      Key: key
+    });
+
+    const response = await this.s3.send(command);
+    const byteArray = await response.Body?.transformToByteArray();
+
+    if (!byteArray) {
+      throw new Error("Failed to retrieve object from S3");
+    }
+
+    return Buffer.from(byteArray);
+  }
+
+  async putObject(params: {
+    key: string;
+    body: Buffer;
+    contentType: string;
+  }): Promise<void> {
+    const command = new PutObjectCommand({
+      Bucket: this.bucketName,
+      Key: params.key,
+      Body: params.body,
+      ContentType: params.contentType
+    });
+
+    await this.s3.send(command);
+  }
 }

@@ -1,0 +1,9 @@
+layers:
+  sharp:
+    path: layers/sharp
+    name: ${self:service}-${sls:stage}-sharp
+    description: Sharp image processing library
+    compatibleRuntimes:
+      - nodejs20.x
+    compatibleArchitectures:
+      - x86_64

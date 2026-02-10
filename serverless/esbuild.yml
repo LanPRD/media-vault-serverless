@@ -6,6 +6,7 @@ esbuild:
   platform: node
   exclude:
     - "@aws-sdk/*"
+    - sharp
   define:
     "require.resolve": undefined
   watch:
@@ -17,9 +18,9 @@ esbuild:
       - ".serverless/**"
 
 sourcemap:
-  dev: true
+  dev: false # true
   prod: false
 
 minify:
-  dev: false
+  dev: true # false
   prod: true
