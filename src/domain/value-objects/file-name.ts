@@ -10,7 +10,7 @@ export class FileName {
   static create(fileName: string): FileName {
     if (!FileName.isValid(fileName)) {
       throw new BadRequestError(
-        "Please use only alphanumeric characters, dots (.), underscores (_), and hyphens (-)."
+        "Please use only alphanumeric characters, dots (.), underscores (_), and hyphens (-) and include at least one dot. Example: 'example.jpg' or 'example_file.png' or 'example-file.png'."
       );
     }
 
@@ -19,7 +19,7 @@ export class FileName {
 
   private static isValid(fileName: string): boolean {
     const validChars = /^[a-zA-Z0-9._-]+$/;
-    return validChars.test(fileName);
+    return validChars.test(fileName) && fileName.includes(".");
   }
 
   extension(): string {

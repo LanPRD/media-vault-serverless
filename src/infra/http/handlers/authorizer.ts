@@ -17,7 +17,12 @@ type AuthorizerResult =
 export async function handler(
   event: APIGatewayRequestAuthorizerEventV2
 ): Promise<AuthorizerResult> {
-  const token = event.headers?.Authorization?.replace("Bearer ", "");
+  const awsAuthorization = event.headers?.authorization; // AWS specific authorization
+  const commonAuthorization = event.headers?.Authorization; // normal header authorization
+  const token = (awsAuthorization ?? commonAuthorization)?.replace(
+    "Bearer ",
+    ""
+  );
 
   if (!token) {
     return {

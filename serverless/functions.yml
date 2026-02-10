@@ -19,3 +19,12 @@ functions:
       - httpApi:
           path: /auth
           method: post
+
+  processUploadFile:
+    handler: src/infra/http/handlers/process-upload.handler
+    timeout: 15
+    events:
+      - s3:
+          bucket: ${self:provider.environment.MEDIA_BUCKET_NAME}
+          event: s3:ObjectCreated:*
+          existing: true
