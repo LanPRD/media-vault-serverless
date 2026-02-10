@@ -97,3 +97,5 @@ jobs:
 
       - name: Deploy
         run: npx serverless deploy --stage dev
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
