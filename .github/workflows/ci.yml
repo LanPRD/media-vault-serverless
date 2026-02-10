@@ -5,10 +5,12 @@ on:
     branches: [master]
     paths:
       - "src/**"
+      - "serverless/**"
   pull_request:
     branches: [master]
     paths:
       - "src/**"
+      - "serverless/**"
   workflow_dispatch:
 
 env:

@@ -5,7 +5,7 @@ import { EnumMediaStatus } from "../enums";
 import { ContentType, FileName, FileSize, MediaStatus } from "../value-objects";
 import type { S3Key } from "../value-objects/s3-key";
 
-interface MediaProps {
+export interface MediaProps {
   ownerId: UniqueEntityId;
   fileName: FileName;
   fileSize: FileSize;
@@ -42,8 +42,18 @@ export class Media extends Entity<MediaProps> {
     return this.props.thumbnail;
   }
 
+  set thumbnail(thumbnail: string | undefined) {
+    this.props.thumbnail = thumbnail;
+    this.props.updatedAt = new Date();
+  }
+
   get status(): MediaStatus {
     return this.props.status;
+  }
+
+  set status(status: MediaStatus) {
+    this.props.status = status;
+    this.props.updatedAt = new Date();
   }
 
   get createdAt(): Date {
