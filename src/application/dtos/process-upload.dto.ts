@@ -1,5 +1,4 @@
-export interface ProcessUploadUseCaseInput {
-  extension: string;
-  bucket: string;
+export interface ProcessUploadInput {
   key: string;
+  fileExtension: string;
 }

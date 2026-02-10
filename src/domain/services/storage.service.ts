@@ -12,4 +12,12 @@ export interface StorageService {
   }): Promise<DefaultStorageOutput>;
 
   generateDownloadUrl(key: S3Key): Promise<DefaultStorageOutput>;
+
+  getObject(key: string): Promise<Buffer>;
+
+  putObject(params: {
+    key: string;
+    body: Buffer;
+    contentType: string;
+  }): Promise<void>;
 }

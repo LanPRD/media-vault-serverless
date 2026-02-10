@@ -6,6 +6,7 @@ import type { ContentType, S3Key } from "@/domain/value-objects";
 
 export class FakeStorageService implements StorageService {
   public uploadUrls: Map<string, string> = new Map();
+  public objects: Map<string, Buffer> = new Map();
   public shouldFail = false;
 
   async generateUploadUrl(params: {
@@ -33,5 +34,30 @@ export class FakeStorageService implements StorageService {
       url: `https://s3.amazonaws.com/bucket/${key.value}?signed=true`,
       expiresIn: 300
     };
+  }
+
+  async getObject(key: string): Promise<Buffer> {
+    if (this.shouldFail) {
+      throw new Error("Storage service unavailable");
+    }
+
+    const object = this.objects.get(key);
+    if (!object) {
+      throw new Error(`Object not found: ${key}`);
+    }
+
+    return object;
+  }
+
+  async putObject(params: {
+    key: string;
+    body: Buffer;
+    contentType: string;
+  }): Promise<void> {
+    if (this.shouldFail) {
+      throw new Error("Storage service unavailable");
+    }
+
+    this.objects.set(params.key, params.body);
   }
 }
