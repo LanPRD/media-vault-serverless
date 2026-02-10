@@ -33,4 +33,8 @@ export class ContentType {
   isVideo(): boolean {
     return this.value === EnumContentType.MP4;
   }
+
+  extension(): string {
+    return this.value.split("/")[1];
+  }
 }

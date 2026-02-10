@@ -33,7 +33,8 @@ export function createMockEvent(
       authorizer: {
         lambda: {
           sub: options.authorizer?.sub ?? "test-user-id",
-          email: options.authorizer?.email ?? "test@example.com"
+          email: options.authorizer?.email ?? "test@example.com",
+          name: options.authorizer?.name ?? "Test User"
         }
       },
       domainName: "localhost",

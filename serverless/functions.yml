@@ -22,7 +22,10 @@ functions:
 
   processUploadFile:
     handler: src/infra/http/handlers/process-upload.handler
-    timeout: 15
+    timeout: 30
+    memorySize: 512
+    layers:
+      - !Ref SharpLambdaLayer
     events:
       - s3:
           bucket: ${self:provider.environment.MEDIA_BUCKET_NAME}
