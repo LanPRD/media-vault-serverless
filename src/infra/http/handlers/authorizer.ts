@@ -8,6 +8,7 @@ import { verify } from "jsonwebtoken";
 export interface TokenPayload {
   sub: string;
   email: string;
+  name: string;
 }
 
 type AuthorizerResult =
@@ -16,43 +17,35 @@ type AuthorizerResult =
 export async function handler(
   event: APIGatewayRequestAuthorizerEventV2
 ): Promise<AuthorizerResult> {
-  const token = event.headers?.Authorization?.replace("Bearer ", "");
+  const awsAuthorization = event.headers?.authorization; // AWS specific authorization
+  const commonAuthorization = event.headers?.Authorization; // normal header authorization
+  const token = (awsAuthorization ?? commonAuthorization)?.replace(
+    "Bearer ",
+    ""
+  );
 
   if (!token) {
     return {
       isAuthorized: false,
-      context: createContext("", "")
+      context: createContext("", "", "")
     };
   }
 
   try {
     const decoded = verify(token, env.JWT_SECRET) as TokenPayload;
 
-    console.log("Authorizing request:", decoded);
-
     return {
       isAuthorized: true,
-      context: createContext(decoded.sub, decoded.email)
+      context: createContext(decoded.sub, decoded.email, decoded.name)
     };
   } catch {
     return {
       isAuthorized: false,
-      context: createContext("", "")
+      context: createContext("", "", "")
     };
   }
 }
 
-function createContext(sub: string, email: string): TokenPayload {
-  return { sub, email };
+function createContext(sub: string, email: string, name: string): TokenPayload {
+  return { sub, email, name };
 }
-
-// {
-//   sub: "user_123",            // subject → QUEM é o usuário (ID interno)
-//   iss: "https://auth.meuapp.com", // issuer → QUEM emitiu o token
-//   aud: "media-api",           // audience → PARA QUEM o token é válido
-//   iat: 1709000000,            // issued at → QUANDO o token foi criado (epoch)
-//   exp: 1709003600,            // expiration → ATÉ QUANDO confiar no token
-
-//   email: "allan@email.com",   // claim custom → dado de conveniência (não é identidade)
-//   role: "user"                // claim custom → papel/perfil do usuário
-// }
