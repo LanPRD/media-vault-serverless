@@ -1,7 +1,7 @@
 import { ProcessUploadUseCase } from "@/application/use-cases/medias/process-upload";
 import { EnumMediaStatus } from "@/domain/enums";
 import { ContentType } from "@/domain/value-objects";
-import { FakeMedia } from "__tests__/fakes/entities/fake-media";
+import { FakeMedia } from "__tests__/fakes/entities";
 import { FakeMediaRepository } from "__tests__/fakes/repositories/fake-media-repository";
 import { FakeImageProcessingService } from "__tests__/fakes/services/fake-image-processing.service";
 import { FakeStorageService } from "__tests__/fakes/services/fake-storage-gateway";

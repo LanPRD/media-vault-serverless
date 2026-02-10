@@ -22,10 +22,6 @@ export async function handler(
   const key = event.Records[0].s3.object.key;
   const fileExtension = key.split(".").pop();
 
-  console.log(
-    `Processing upload for key: ${key} with extension: ${fileExtension}...`
-  );
-
   if (!fileExtension) {
     return HandlerResponse.error(new ValidationError("Invalid file extension"));
   }
