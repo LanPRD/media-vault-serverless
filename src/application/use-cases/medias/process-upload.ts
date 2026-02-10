@@ -1,6 +1,11 @@
 import type { ProcessUploadInput } from "@/application/dtos";
 import { left, right, type Either } from "@/core/either";
-import { AppError, InternalError, NotFoundError } from "@/core/errors";
+import {
+  AppError,
+  BadRequestError,
+  InternalError,
+  NotFoundError
+} from "@/core/errors";
 import { EnumMediaStatus } from "@/domain/enums";
 import type { MediaRepository } from "@/domain/repositories/media.repository";
 import type { ImageProcessingService } from "@/domain/services/image-processing.service";
@@ -16,7 +21,13 @@ export class ProcessUploadUseCase {
     private imageProcessingService: ImageProcessingService
   ) {}
 
-  async execute(key: ProcessUploadInput): Promise<UseCaseResult> {
+  async execute(props: ProcessUploadInput): Promise<UseCaseResult> {
+    const { key, fileExtension } = props;
+
+    if (!fileExtension.match(/^(jpeg|png)$/i)) {
+      return left(new BadRequestError("Unsupported file extension"));
+    }
+
     const media = await this.mediaRepository.findByS3Key(key);
 
     if (!media) {

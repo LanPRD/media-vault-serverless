@@ -35,8 +35,6 @@ export class ContentType {
   }
 
   extension(): string {
-    return Object.keys(EnumContentType).find(
-      key => key === this.value.split("/")[1]
-    )!;
+    return this.value.split("/")[1];
   }
 }

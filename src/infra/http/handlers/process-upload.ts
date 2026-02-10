@@ -30,7 +30,7 @@ export async function handler(
     return HandlerResponse.error(new ValidationError("Invalid file extension"));
   }
 
-  const result = await useCase.execute(key);
+  const result = await useCase.execute({ key, fileExtension });
 
   if (result.isLeft()) {
     return HandlerResponse.error(result.value);

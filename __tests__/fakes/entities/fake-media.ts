@@ -10,11 +10,12 @@ export class FakeMedia {
     ownerId: UniqueEntityId = new UniqueEntityId(),
     id: UniqueEntityId = new UniqueEntityId()
   ): Media {
-    const contentType = ContentType.create(
-      faker.helpers.enumValue(EnumContentType)
-    );
+    const contentType =
+      overrides.contentType ??
+      ContentType.create(faker.helpers.enumValue(EnumContentType));
 
     const extension = contentType.extension();
+
     const fileName = FileName.create(
       `${faker.word.noun()}_${faker.word.adjective()}.${extension}`
     );
