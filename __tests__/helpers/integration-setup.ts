@@ -118,18 +118,22 @@ export class IntegrationSetup {
   }
 
   private static async clearBucket(): Promise<void> {
-    const { Contents } = await s3Client.send(
-      new ListObjectsV2Command({ Bucket: env.MEDIA_BUCKET_NAME })
-    );
+    try {
+      const { Contents } = await s3Client.send(
+        new ListObjectsV2Command({ Bucket: env.MEDIA_BUCKET_NAME })
+      );
 
-    if (!Contents?.length) return;
+      if (!Contents?.length) return;
 
-    await s3Client.send(
-      new DeleteObjectsCommand({
-        Bucket: env.MEDIA_BUCKET_NAME,
-        Delete: { Objects: Contents.map(o => ({ Key: o.Key })) }
-      })
-    );
+      await s3Client.send(
+        new DeleteObjectsCommand({
+          Bucket: env.MEDIA_BUCKET_NAME,
+          Delete: { Objects: Contents.map(o => ({ Key: o.Key })) }
+        })
+      );
+    } catch {
+      // Ignore if bucket doesn't exist
+    }
   }
 
   private static async deleteTable(): Promise<void> {

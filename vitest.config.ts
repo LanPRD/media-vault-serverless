@@ -7,6 +7,7 @@ export default defineConfig({
     root: "./",
     include: ["__tests__/**/*.spec.ts"],
     exclude: ["node_modules"],
+    fileParallelism: false,
     env: {
       NODE_ENV: "test"
     },
