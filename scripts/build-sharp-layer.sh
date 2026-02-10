@@ -18,6 +18,8 @@ docker run --rm \
   --platform linux/amd64 \
   node:20-slim \
   bash -c "
+    cd /tmp && \
+    npm cache clean --force && \
     npm init -y && \
     npm install sharp --save && \
     cp -r node_modules /output/ && \

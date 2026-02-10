@@ -92,5 +92,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: sa-east-1
 
+      - name: Build Sharp Layer
+        run: bash scripts/build-sharp-layer.sh
+
       - name: Deploy
-        run: npm run deploy:dev
+        run: serverless deploy --stage dev
