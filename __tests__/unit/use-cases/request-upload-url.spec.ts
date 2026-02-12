@@ -320,7 +320,7 @@ describe("RequestUploadUrlUseCase", () => {
       expect(result.isLeft()).toBe(true);
 
       if (result.isLeft()) {
-        expect(result.value.errorType).toBe("INTERNAL_ERROR");
+        expect(result.value.errorType).toBe("INTERNAL_SERVER_ERROR");
       }
 
       expect(mediaRepository.medias).toHaveLength(0);
