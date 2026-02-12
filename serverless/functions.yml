@@ -31,6 +31,8 @@ functions:
           bucket: ${self:provider.environment.MEDIA_BUCKET_NAME}
           event: s3:ObjectCreated:*
           existing: true
+          rules:
+            - prefix: media/
 
   listFiles:
     handler: src/infra/http/handlers/list-files.handler
@@ -39,3 +41,5 @@ functions:
       - httpApi:
           path: /files
           method: get
+          authorizer:
+            name: tokenAuthorizer

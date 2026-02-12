@@ -1,5 +1,5 @@
 import { ProcessUploadUseCase } from "@/application/use-cases/medias/process-upload";
-import { ValidationError } from "@/core/errors";
+import { BadRequestError, ValidationError } from "@/core/errors";
 import { DynamoDBMediaRepository } from "@/infra/database/repositories/dynamodb-media.repository";
 import { S3StorageService } from "@/infra/services/s3-storage.service";
 import { SharpImageProcessingService } from "@/infra/services/sharp-image-processing.service";
@@ -20,6 +20,11 @@ export async function handler(
   _context: Context
 ): Promise<APIGatewayProxyResultV2> {
   const key = event.Records[0].s3.object.key;
+
+  if (!key.startsWith("media/")) {
+    return HandlerResponse.error(new BadRequestError("Invalid file path"));
+  }
+
   const fileExtension = key.split(".").pop();
 
   if (!fileExtension) {
