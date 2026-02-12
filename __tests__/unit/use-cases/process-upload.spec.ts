@@ -122,5 +122,24 @@ describe("ProcessUploadUseCase", () => {
 
       expect(result.isLeft()).toBe(true);
     });
+
+    it("should return error when file is empty", async () => {
+      const fakeMedia = FakeMedia.build();
+      const key = fakeMedia.s3Key.value;
+
+      await mediaRepository.save(fakeMedia);
+      storageService.objects.set(key, Buffer.from([]));
+
+      const result = await sut.execute({
+        key,
+        fileExtension: fakeMedia.fileName.extension()
+      });
+
+      expect(result.isLeft()).toBe(true);
+
+      if (result.isLeft()) {
+        expect(result.value.errorType).toBe("BAD_REQUEST");
+      }
+    });
   });
 });
