@@ -39,6 +39,10 @@ export class ProcessUploadUseCase {
     try {
       const originalFile = await this.storageService.getObject(key);
 
+      if (originalFile.length === 0) {
+        return left(new BadRequestError("File is empty"));
+      }
+
       const thumbnail =
         await this.imageProcessingService.generateThumbnail(originalFile);
 
