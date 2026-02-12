@@ -4,13 +4,16 @@ import type {
 } from "@/application/dtos";
 import { left, right, type Either } from "@/core/either";
 import { UniqueEntityId } from "@/core/entities";
-import { AppError, InternalError } from "@/core/errors";
+import { BadRequestError, InternalError } from "@/core/errors";
 import { Media } from "@/domain/entities";
 import type { MediaRepository } from "@/domain/repositories/media.repository";
 import type { StorageService } from "@/domain/services/storage.service";
 import { ContentType, FileName, FileSize, S3Key } from "@/domain/value-objects";
 
-type UseCaseResult = Either<AppError, RequestUploadUrlOutput>;
+type UseCaseResult = Either<
+  BadRequestError | InternalError,
+  RequestUploadUrlOutput
+>;
 
 export class RequestUploadUrlUseCase {
   constructor(
@@ -51,7 +54,7 @@ export class RequestUploadUrlUseCase {
         expiresIn: uploadResult.expiresIn
       });
     } catch (error) {
-      if (error instanceof AppError) {
+      if (error instanceof BadRequestError) {
         return left(error);
       }
 
