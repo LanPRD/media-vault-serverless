@@ -31,3 +31,11 @@ functions:
           bucket: ${self:provider.environment.MEDIA_BUCKET_NAME}
           event: s3:ObjectCreated:*
           existing: true
+
+  listFiles:
+    handler: src/infra/http/handlers/list-files.handler
+    timeout: 15
+    events:
+      - httpApi:
+          path: /files
+          method: get
