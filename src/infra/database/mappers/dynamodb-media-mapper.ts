@@ -26,7 +26,10 @@ export interface DynamoDBMediaItem {
 export class DynamoDBMediaMapper {
   static toDomain(item: DynamoDBMediaItem): Media {
     const ownerId = new UniqueEntityId(item.PK.replace("USER#", ""));
-    const mediaId = new UniqueEntityId(item.SK.replace("MEDIA#", ""));
+
+    // SK format: MEDIA#${createdAt}#${mediaId}
+    const skParts = item.SK.split("#");
+    const mediaId = new UniqueEntityId(skParts[2]);
 
     return Media.create(
       {
@@ -47,10 +50,11 @@ export class DynamoDBMediaMapper {
   static toDynamoDB(media: Media): DynamoDBMediaItem {
     const ownerId = media.ownerId.toString();
     const mediaId = media.id.toString();
+    const createdAt = media.createdAt.toISOString();
 
     return {
       PK: `USER#${ownerId}`,
-      SK: `MEDIA#${mediaId}`,
+      SK: `MEDIA#${createdAt}#${mediaId}`,
       GSI1PK: media.s3Key.value,
       GSI1SK: media.s3Key.value,
       fileName: media.fileName.value,
@@ -59,7 +63,7 @@ export class DynamoDBMediaMapper {
       s3Key: media.s3Key.value,
       thumbnail: media.thumbnail,
       status: media.status.value,
-      createdAt: media.createdAt.toISOString(),
+      createdAt,
       updatedAt: media.updatedAt.toISOString()
     };
   }

@@ -1,8 +1,12 @@
 import type { UniqueEntityId } from "@/core/entities";
 import type { Media } from "@/domain/entities";
-import type { MediaRepository } from "@/domain/repositories/media.repository";
+import type {
+  FindByOwnerIdParams,
+  FindByOwnerIdResult,
+  MediaRepository
+} from "@/domain/repositories/media.repository";
 import { env } from "@/infra/env";
-import { GetCommand, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { docClient } from "../dynamodb/dynamodb.client";
 import {
   DynamoDBMediaMapper,
@@ -28,23 +32,34 @@ export class DynamoDBMediaRepository implements MediaRepository {
     userId: UniqueEntityId
   ): Promise<Media | null> {
     const pk = `USER#${userId.toString()}`;
-    const sk = `MEDIA#${id.toString()}`;
+    const mediaId = id.toString();
 
     const result = await docClient.send(
-      new GetCommand({
+      new QueryCommand({
         TableName: this.tableName,
-        Key: { PK: pk, SK: sk }
+        KeyConditionExpression: "PK = :pk AND begins_with(SK, :prefix)",
+        FilterExpression: "contains(SK, :mediaId)",
+        ExpressionAttributeValues: {
+          ":pk": pk,
+          ":prefix": "MEDIA#",
+          ":mediaId": mediaId
+        },
+        Limit: 1
       })
     );
 
-    if (!result.Item) {
+    if (!result.Items || result.Items.length === 0) {
       return null;
     }
 
-    return DynamoDBMediaMapper.toDomain(result.Item as DynamoDBMediaItem);
+    return DynamoDBMediaMapper.toDomain(result.Items[0] as DynamoDBMediaItem);
   }
 
-  async findByOwnerId(ownerId: UniqueEntityId): Promise<Media[]> {
+  async findByOwnerId(
+    props: FindByOwnerIdParams
+  ): Promise<FindByOwnerIdResult> {
+    const { ownerId, limit, cursor } = props;
+
     const pk = `USER#${ownerId.toString()}`;
 
     const result = await docClient.send(
@@ -54,17 +69,26 @@ export class DynamoDBMediaRepository implements MediaRepository {
         ExpressionAttributeValues: {
           ":pk": pk,
           ":prefix": "MEDIA#"
-        }
+        },
+        Limit: limit,
+        ExclusiveStartKey: cursor,
+        ScanIndexForward: false
       })
     );
 
     if (!result.Items || result.Items.length === 0) {
-      return [];
+      return {
+        items: [],
+        nextCursor: null
+      };
     }
 
-    return result.Items.map(item =>
-      DynamoDBMediaMapper.toDomain(item as DynamoDBMediaItem)
-    );
+    return {
+      items: result.Items.map(item =>
+        DynamoDBMediaMapper.toDomain(item as DynamoDBMediaItem)
+      ),
+      nextCursor: result.LastEvaluatedKey ?? null
+    };
   }
 
   async findByS3Key(s3Key: string): Promise<Media | null> {
