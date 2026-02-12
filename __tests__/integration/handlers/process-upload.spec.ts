@@ -13,9 +13,6 @@ import { FakeMedia } from "__tests__/fakes/entities";
 import { getStatusCode, IntegrationSetup } from "__tests__/helpers";
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
 
-const mediaRepository = new DynamoDBMediaRepository();
-const storageService = new S3StorageService();
-
 const VALID_PNG_BUFFER = Buffer.from([
   0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d, 0x49,
   0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x06,
@@ -26,6 +23,9 @@ const VALID_PNG_BUFFER = Buffer.from([
 ]);
 
 describe("Handler: process-upload", () => {
+  const mediaRepository = new DynamoDBMediaRepository();
+  const storageService = new S3StorageService();
+
   beforeAll(async () => {
     await IntegrationSetup.setup();
   });

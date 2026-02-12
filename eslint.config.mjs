@@ -7,5 +7,10 @@ export default [
     rules: {
       "no-magic-numbers": ["off"]
     }
+  },
+  {
+    rules: {
+      complexity: ["error", { max: 10 }]
+    }
   }
 ];

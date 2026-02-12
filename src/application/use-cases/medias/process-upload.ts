@@ -1,18 +1,16 @@
 import type { ProcessUploadInput } from "@/application/dtos";
 import { left, right, type Either } from "@/core/either";
-import {
-  AppError,
-  BadRequestError,
-  InternalError,
-  NotFoundError
-} from "@/core/errors";
+import { BadRequestError, InternalError, NotFoundError } from "@/core/errors";
 import { EnumMediaStatus } from "@/domain/enums";
 import type { MediaRepository } from "@/domain/repositories/media.repository";
 import type { ImageProcessingService } from "@/domain/services/image-processing.service";
 import type { StorageService } from "@/domain/services/storage.service";
 import { MediaStatus } from "@/domain/value-objects";
 
-type UseCaseResult = Either<AppError, null>;
+type UseCaseResult = Either<
+  BadRequestError | NotFoundError | InternalError,
+  null
+>;
 
 export class ProcessUploadUseCase {
   constructor(
@@ -55,11 +53,9 @@ export class ProcessUploadUseCase {
 
       await this.mediaRepository.save(media);
     } catch (error) {
-      if (error instanceof AppError) {
-        return left(error);
-      }
-
-      return left(new InternalError("Failed to process media"));
+      return left(
+        new InternalError(error instanceof Error ? error.message : undefined)
+      );
     }
 
     return right(null);
