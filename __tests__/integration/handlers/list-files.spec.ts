@@ -1,6 +1,6 @@
 import { UniqueEntityId } from "@/core/entities";
 import { DynamoDBMediaRepository } from "@/infra/database/repositories/dynamodb-media.repository";
-import type { ListFilesResponseDto } from "@/infra/http/dtos/list-files.dto";
+import type { ListFilesResponseDto } from "@/infra/http/dtos";
 import { handler } from "@/infra/http/handlers/list-files";
 import { DynamoFakeMedia } from "__tests__/fakes/entities";
 import {

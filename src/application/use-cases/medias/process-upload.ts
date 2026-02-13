@@ -29,7 +29,7 @@ export class ProcessUploadUseCase {
     const media = await this.mediaRepository.findByS3Key(key);
 
     if (!media) {
-      return left(new NotFoundError("Media not found", key));
+      return left(new NotFoundError("Media", key));
     }
 
     const ownerId = media.ownerId.toString();
