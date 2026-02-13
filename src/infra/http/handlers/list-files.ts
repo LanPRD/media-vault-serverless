@@ -5,7 +5,7 @@ import type { APIGatewayProxyEventV2WithLambdaAuthorizer } from "aws-lambda";
 import {
   ListFilesRequestQuerySchema,
   type ListFilesResponseDto
-} from "../dtos/list-files.dto";
+} from "../dtos";
 import { ListFilesPresenter } from "../presenters/list-files.presenter";
 import { HandlerResponse } from "../response";
 import type { TokenPayload } from "./authorizer";

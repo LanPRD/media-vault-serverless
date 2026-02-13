@@ -1,7 +1,4 @@
-import type {
-  DownloadFileInput,
-  DownloadFileOutput
-} from "@/application/dtos/download-file.dto";
+import type { DownloadFileInput, DownloadFileOutput } from "@/application/dtos";
 import { left, right, type Either } from "@/core/either";
 import { UniqueEntityId } from "@/core/entities";
 import { InternalError, NotFoundError } from "@/core/errors";
@@ -28,7 +25,7 @@ export class DownloadFileUseCase {
     );
 
     if (!file) {
-      return left(new NotFoundError("File not found"));
+      return left(new NotFoundError("File", fileId.toString()));
     }
 
     try {
