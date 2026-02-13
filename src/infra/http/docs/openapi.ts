@@ -3,64 +3,47 @@ import {
   OpenAPIRegistry
 } from "@asteasolutions/zod-to-openapi";
 import {
+  DownloadFilePathSchema,
+  DownloadFileResponseSchema,
   ErrorResponseSchema,
+  GenerateJwtResponseSchema,
   GenerateUploadUrlRequestSchema,
-  GenerateUploadUrlResponseSchema
+  GenerateUploadUrlResponseSchema,
+  ListFilesRequestQuerySchema,
+  ListFilesResponseSchema,
+  MediaFileSchema,
+  PaginationCursorSchema
 } from "../dtos";
+import { registerAuthPaths } from "./paths/auth.path";
+import { registerFilesPaths } from "./paths/files.path";
+import { registerUploadsPaths } from "./paths/uploads.path";
 
 export const registry = new OpenAPIRegistry();
 
 // Register schemas
 registry.register("ErrorResponse", ErrorResponseSchema);
+registry.register("PaginationCursor", PaginationCursorSchema);
+registry.register("GenerateJwtResponse", GenerateJwtResponseSchema);
 registry.register("GenerateUploadUrlRequest", GenerateUploadUrlRequestSchema);
 registry.register("GenerateUploadUrlResponse", GenerateUploadUrlResponseSchema);
+registry.register("ListFilesQuery", ListFilesRequestQuerySchema);
+registry.register("MediaFile", MediaFileSchema);
+registry.register("ListFilesResponse", ListFilesResponseSchema);
+registry.register("DownloadFileParams", DownloadFilePathSchema);
+registry.register("DownloadFileResponse", DownloadFileResponseSchema);
 
-// Security
+// Register security scheme
 registry.registerComponent("securitySchemes", "bearerAuth", {
   type: "http",
   scheme: "bearer",
-  bearerFormat: "JWT"
+  bearerFormat: "JWT",
+  description: "JWT token obtained from POST /auth"
 });
 
-// Endpoints
-registry.registerPath({
-  method: "post",
-  path: "/uploads/presign",
-  summary: "Generate presigned upload URL",
-  description: "Generates a presigned S3 URL for uploading media files",
-  tags: ["Uploads"],
-  security: [{ bearerAuth: [] }],
-  request: {
-    body: {
-      content: {
-        "application/json": {
-          schema: GenerateUploadUrlRequestSchema
-        }
-      }
-    }
-  },
-  responses: {
-    201: {
-      description: "Upload URL generated successfully",
-      content: {
-        "application/json": {
-          schema: GenerateUploadUrlResponseSchema
-        }
-      }
-    },
-    400: {
-      description: "Validation error",
-      content: {
-        "application/json": {
-          schema: ErrorResponseSchema
-        }
-      }
-    },
-    401: {
-      description: "Unauthorized"
-    }
-  }
-});
+// Register paths
+registerAuthPaths(registry);
+registerUploadsPaths(registry);
+registerFilesPaths(registry);
 
 export function generateOpenApiDocument() {
   const generator = new OpenApiGeneratorV3(registry.definitions);
@@ -70,12 +53,27 @@ export function generateOpenApiDocument() {
     info: {
       title: "Media Vault API",
       version: "1.0.0",
-      description: "API for managing media uploads and storage"
+      description:
+        "API for managing media uploads and storage. Supports image and video uploads with automatic thumbnail generation."
     },
     servers: [
       {
         url: "http://localhost:3000",
         description: "Local development"
+      }
+    ],
+    tags: [
+      {
+        name: "Auth",
+        description: "Authentication endpoints"
+      },
+      {
+        name: "Uploads",
+        description: "File upload operations"
+      },
+      {
+        name: "Files",
+        description: "File management operations"
       }
     ]
   });

@@ -26,6 +26,16 @@ esac
 echo -e "📝   Checking types...\n"
 npx tsc --noEmit
 
+echo -e "Checking prettier...\n"
+
+if ! npx prettier --check .; then
+  echo "⚠️  Prettier failed. Formatting files..."
+  npx prettier --write .
+fi
+
+echo -e "📝   Checking eslint...\n"
+npm run lint
+
 bash scripts/clear-root-files.sh
 
 if ! docker info > /dev/null 2>&1; then
@@ -40,16 +50,6 @@ fi
 
 echo -e "🧪   Running tests...\n"
 npx vitest --config vitest.config.ts --run
-
-echo -e "Checking prettier...\n"
-
-if ! npx prettier --check .; then
-  echo "⚠️  Prettier failed. Formatting files..."
-  npx prettier --write .
-fi
-
-echo -e "📝   Checking eslint...\n"
-npm run lint
 
 echo -e "📦   Building layer...\n"
 bash scripts/build-sharp-layer.sh
