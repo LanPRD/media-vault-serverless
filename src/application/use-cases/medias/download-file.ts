@@ -33,7 +33,7 @@ export class DownloadFileUseCase {
 
       return right({
         downloadUrl: downloadUrl.url,
-        experiresIn: downloadUrl.expiresIn,
+        expiresIn: downloadUrl.expiresIn,
         fileName: file.fileName.value
       });
     } catch (error) {

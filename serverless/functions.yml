@@ -43,3 +43,13 @@ functions:
           method: get
           authorizer:
             name: tokenAuthorizer
+
+  downloadFile:
+    handler: src/infra/http/handlers/download-file.handler
+    timeout: 15
+    events:
+      - httpApi:
+          path: /files/{fileId}/download
+          method: get
+          authorizer:
+            name: tokenAuthorizer

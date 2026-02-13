@@ -5,6 +5,6 @@ export interface DownloadFileInput {
 
 export interface DownloadFileOutput {
   downloadUrl: string;
-  experiresIn: number;
+  expiresIn: number;
   fileName: string;
 }
