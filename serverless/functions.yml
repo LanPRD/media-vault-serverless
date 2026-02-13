@@ -53,3 +53,19 @@ functions:
           method: get
           authorizer:
             name: tokenAuthorizer
+
+  swaggerUI:
+    handler: src/infra/http/handlers/swagger-ui.handlerUI
+    timeout: 15
+    events:
+      - httpApi:
+          path: /docs
+          method: get
+
+  swaggerSpec:
+    handler: src/infra/http/handlers/swagger-ui.handlerSpec
+    timeout: 15
+    events:
+      - httpApi:
+          path: /docs/openapi.json
+          method: get
