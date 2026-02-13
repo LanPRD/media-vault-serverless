@@ -6,7 +6,7 @@ import type {
   MediaRepository
 } from "@/domain/repositories/media.repository";
 import { env } from "@/infra/env";
-import { PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { GetCommand, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { docClient } from "../dynamodb/dynamodb.client";
 import {
   DynamoDBMediaMapper,
@@ -29,30 +29,24 @@ export class DynamoDBMediaRepository implements MediaRepository {
 
   async findByIdAndUserId(
     id: UniqueEntityId,
+    createdAt: Date,
     userId: UniqueEntityId
   ): Promise<Media | null> {
     const pk = `USER#${userId.toString()}`;
-    const mediaId = id.toString();
+    const sk = `MEDIA#${createdAt.toISOString()}#${id.toString()}`;
 
     const result = await docClient.send(
-      new QueryCommand({
+      new GetCommand({
         TableName: this.tableName,
-        KeyConditionExpression: "PK = :pk AND begins_with(SK, :prefix)",
-        FilterExpression: "contains(SK, :mediaId)",
-        ExpressionAttributeValues: {
-          ":pk": pk,
-          ":prefix": "MEDIA#",
-          ":mediaId": mediaId
-        },
-        Limit: 1
+        Key: { PK: pk, SK: sk }
       })
     );
 
-    if (!result.Items || result.Items.length === 0) {
+    if (!result.Item) {
       return null;
     }
 
-    return DynamoDBMediaMapper.toDomain(result.Items[0] as DynamoDBMediaItem);
+    return DynamoDBMediaMapper.toDomain(result.Item as DynamoDBMediaItem);
   }
 
   async findByOwnerId(

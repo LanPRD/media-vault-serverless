@@ -1,4 +1,4 @@
-import type { GenerateUploadUrlResponseDto } from "@/infra/http/dtos/generate-upload-url.dto";
+import type { GenerateUploadUrlResponseDto } from "@/infra/http/dtos";
 import { handler } from "@/infra/http/handlers/generate-upload-url";
 import {
   createMockEvent,

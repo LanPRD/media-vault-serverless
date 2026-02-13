@@ -3,7 +3,7 @@ import { EnumContentType, EnumMediaStatus } from "@/domain/enums";
 import { ContentType, S3Key } from "@/domain/value-objects";
 import { DynamoDBMediaRepository } from "@/infra/database/repositories/dynamodb-media.repository";
 import { env } from "@/infra/env";
-import { handler } from "@/infra/http/handlers/process-upload";
+import { handler } from "@/infra/events/handlers/process-upload";
 import { S3StorageService } from "@/infra/services/s3-storage.service";
 import {
   createFakeLambdaContext,

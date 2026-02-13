@@ -1,10 +1,10 @@
 import { ProcessUploadUseCase } from "@/application/use-cases/medias/process-upload";
 import { BadRequestError, ValidationError } from "@/core/errors";
 import { DynamoDBMediaRepository } from "@/infra/database/repositories/dynamodb-media.repository";
+import { HandlerResponse } from "@/infra/http/response";
 import { S3StorageService } from "@/infra/services/s3-storage.service";
 import { SharpImageProcessingService } from "@/infra/services/sharp-image-processing.service";
 import type { APIGatewayProxyResultV2, Context, S3Event } from "aws-lambda";
-import { HandlerResponse } from "../response";
 
 const storageService = new S3StorageService();
 const mediaRepository = new DynamoDBMediaRepository();

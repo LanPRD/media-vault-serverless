@@ -3,6 +3,9 @@
 echo -e "🗑️   Removing dist folder..."
 rm --recursive --force dist
 
+echo -e "🗑️   Removing .serverless folder..."
+rm --recursive --force .serverless
+
 echo -e "🗑️   Removing .esbuild folder..."
 rm --recursive --force .esbuild
 

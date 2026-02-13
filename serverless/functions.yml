@@ -21,7 +21,7 @@ functions:
           method: post
 
   processUploadFile:
-    handler: src/infra/http/handlers/process-upload.handler
+    handler: src/infra/events/handlers/process-upload.handler
     timeout: 30
     memorySize: 512
     layers:
@@ -40,6 +40,16 @@ functions:
     events:
       - httpApi:
           path: /files
+          method: get
+          authorizer:
+            name: tokenAuthorizer
+
+  downloadFile:
+    handler: src/infra/http/handlers/download-file.handler
+    timeout: 15
+    events:
+      - httpApi:
+          path: /files/{createdAt}/{fileId}/download
           method: get
           authorizer:
             name: tokenAuthorizer

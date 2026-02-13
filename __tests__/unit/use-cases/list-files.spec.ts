@@ -18,8 +18,14 @@ describe("ListFilesUseCase", () => {
       const userId = new UniqueEntityId();
 
       const fakeMedias = [
-        FakeMedia.build({ ownerId: userId }),
-        FakeMedia.build({ ownerId: userId })
+        FakeMedia.build({
+          ownerId: userId,
+          createdAt: new Date("2026-02-12T10:00:00Z")
+        }),
+        FakeMedia.build({
+          ownerId: userId,
+          createdAt: new Date("2026-02-12T09:00:00Z")
+        })
       ];
 
       mediaRepository.medias = fakeMedias;
