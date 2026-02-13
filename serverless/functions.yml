@@ -49,7 +49,7 @@ functions:
     timeout: 15
     events:
       - httpApi:
-          path: /files/{fileId}/download
+          path: /files/{createdAt}/{fileId}/download
           method: get
           authorizer:
             name: tokenAuthorizer

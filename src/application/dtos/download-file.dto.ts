@@ -1,6 +1,7 @@
 export interface DownloadFileInput {
   fileId: string;
   ownerId: string;
+  createdAt: string;
 }
 
 export interface DownloadFileOutput {

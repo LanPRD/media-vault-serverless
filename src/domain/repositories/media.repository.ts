@@ -16,6 +16,7 @@ export interface MediaRepository {
   save(media: Media): Promise<void>;
   findByIdAndUserId(
     id: UniqueEntityId,
+    createdAt: Date,
     userId: UniqueEntityId
   ): Promise<Media | null>;
   findByOwnerId(props: FindByOwnerIdParams): Promise<FindByOwnerIdResult>;

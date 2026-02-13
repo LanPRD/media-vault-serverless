@@ -28,10 +28,11 @@ export async function handler(
   }
 
   const userId = event.requestContext.authorizer.lambda.sub;
-  const { fileId } = parsed.data;
+  const { fileId, createdAt } = parsed.data;
 
   const result = await useCase.execute({
     fileId,
+    createdAt,
     ownerId: userId
   });
 

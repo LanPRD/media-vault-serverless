@@ -28,6 +28,7 @@ export class FakeMediaRepository implements MediaRepository {
 
   async findByIdAndUserId(
     id: UniqueEntityId,
+    createdAt: Date,
     userId: UniqueEntityId
   ): Promise<Media | null> {
     if (this.shouldFail) {
@@ -38,7 +39,8 @@ export class FakeMediaRepository implements MediaRepository {
       this.medias.find(
         media =>
           media.id.toString() === id.toString() &&
-          media.ownerId.toString() === userId.toString()
+          media.ownerId.toString() === userId.toString() &&
+          media.createdAt.getTime() === createdAt.getTime()
       ) ?? null
     );
   }
