@@ -19,8 +19,13 @@ export class DownloadFileUseCase {
   async execute(props: DownloadFileInput): Promise<UseCaseResult> {
     const fileId = new UniqueEntityId(props.fileId);
     const ownerId = new UniqueEntityId(props.ownerId);
+    const createdAt = new Date(props.createdAt);
 
-    const file = await this.mediaRepository.findByIdAndUserId(fileId, ownerId);
+    const file = await this.mediaRepository.findByIdAndUserId(
+      fileId,
+      createdAt,
+      ownerId
+    );
 
     if (!file) {
       return left(new NotFoundError("File not found"));

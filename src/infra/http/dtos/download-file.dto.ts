@@ -9,6 +9,10 @@ export const DownloadFilePathSchema = z.object({
   fileId: z.uuid().openapi({
     description: "ID of the file to download",
     example: "123e4567-e89b-12d3-a456-426655440000"
+  }),
+  createdAt: z.iso.datetime().openapi({
+    description: "Creation timestamp of the file",
+    example: "2026-02-11T12:00:00.000Z"
   })
 });
 
