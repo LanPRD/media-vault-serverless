@@ -3,10 +3,7 @@ import { ValidationError } from "@/core/errors";
 import { DynamoDBMediaRepository } from "@/infra/database/repositories/dynamodb-media.repository";
 import { S3StorageService } from "@/infra/services/s3-storage.service";
 import type { APIGatewayProxyEventV2WithLambdaAuthorizer } from "aws-lambda";
-import {
-  DownloadFilePathSchema,
-  type DownloadFileResponseDto
-} from "../dtos/download-file.dto";
+import { DownloadFilePathSchema, type DownloadFileResponseDto } from "../dtos";
 import { HandlerResponse } from "../response";
 import type { TokenPayload } from "./authorizer";
 

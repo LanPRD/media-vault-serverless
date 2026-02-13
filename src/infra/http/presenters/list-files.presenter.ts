@@ -1,4 +1,4 @@
-import type { ListFilesOutput } from "@/application/dtos/list-files.dto";
+import type { ListFilesOutput } from "@/application/dtos";
 
 export class ListFilesPresenter {
   static toHTTP(useCaseResult: ListFilesOutput) {

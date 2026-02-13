@@ -1,7 +1,4 @@
-import type {
-  ListFilesInput,
-  ListFilesOutput
-} from "@/application/dtos/list-files.dto";
+import type { ListFilesInput, ListFilesOutput } from "@/application/dtos";
 import { left, right, type Either } from "@/core/either";
 import { UniqueEntityId } from "@/core/entities";
 import { InternalError } from "@/core/errors";
