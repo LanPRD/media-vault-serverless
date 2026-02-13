@@ -21,7 +21,7 @@ functions:
           method: post
 
   processUploadFile:
-    handler: src/infra/http/handlers/process-upload.handler
+    handler: src/infra/events/handlers/process-upload.handler
     timeout: 30
     memorySize: 512
     layers:
