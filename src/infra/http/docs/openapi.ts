@@ -60,6 +60,10 @@ export function generateOpenApiDocument() {
       {
         url: "http://localhost:3000",
         description: "Local development"
+      },
+      {
+        url: "https://x0mue43gqj.execute-api.sa-east-1.amazonaws.com",
+        description: "Development environment"
       }
     ],
     tags: [
