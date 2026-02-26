@@ -33,10 +33,10 @@ multi-tenant platform.
     │                                        │    DynamoDB      │
     │                                        └──────────────────┘
     │                                                 ▲
-    │  3. PUT file (presigned URL)                   │
+    │  3. PUT file (presigned URL)                    │
     │                                                 │ 5. Update status
     ▼                                                 │    (status: ready)
-┌────────┐  4. S3 Event (ObjectCreated)      ┌───────┴──────────┐
+┌────────┐  4. S3 Event (ObjectCreated)      ┌────────┴─────────┐
 │   S3   │ ────────────────────────────────► │ Lambda           │
 │        │                                   │ (processUpload)  │
 │        │ ◄──────────────────────────────── │ + thumbnail      │
