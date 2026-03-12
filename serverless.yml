@@ -10,6 +10,7 @@ provider:
   environment: ${file(./serverless/resources.yml):environment}
   iam:
     role:
+      name: lambda-${self:service}-${sls:stage}-role
       statements: ${file(./serverless/iam.yml):iamRoleStatements}
   httpApi:
     authorizers:
